@@ -65,7 +65,7 @@ public class LiquidsState {
         if (fromTube.isEmpty() || toTube.size() >= tubeVolume)
             throw new WrongMoveException(move.from(), move.to(),
                     "Tube filling error (sizes: %d -> %d). Volume: %d".formatted(fromTube.size(), toTube.size(), tubeVolume));
-        if (!fromTube.getLast().equals(toTube.getLast()))
+        if (!toTube.isEmpty() && !fromTube.getLast().equals(toTube.getLast()))
             throw new WrongMoveException(move.from(), move.to(), "Wrong coloring");
     }
 
