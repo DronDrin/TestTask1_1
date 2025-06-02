@@ -56,4 +56,8 @@ public class LiquidsState {
                 move.from() == move.to())
             throw new WrongMoveException(move.from(), move.to(), "Invalid index");
     }
+
+    public boolean isSolved() {
+        return tubes.stream().allMatch(t -> t.stream().distinct().count() <= 1);
+    }
 }
