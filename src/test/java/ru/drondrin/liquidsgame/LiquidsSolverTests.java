@@ -121,7 +121,7 @@ public class LiquidsSolverTests {
     }
 
     @Disabled               // do not use randomized stress tests in normal testing
-    @RepeatedTest(1000)
+    @RepeatedTest(10000)
     public void iteratingSolverRandomTest() {
         randomTest(new IteratingLiquidsSolver());
     }
@@ -138,8 +138,8 @@ public class LiquidsSolverTests {
     private static void randomTest(LiquidsSolver solver) {
         Random rnd = new Random(System.nanoTime());
         int tubeVolume = rnd.nextInt(3, 9);
-        int tubesCount = rnd.nextInt(4, 30);
-        int liquidsCount = rnd.nextInt(2, tubesCount);
+        int tubesCount = rnd.nextInt(4, 16);
+        int liquidsCount = tubesCount - 2;
 
         var liquids = range(0, liquidsCount)
                 .flatMap(liquid -> range(0, tubeVolume).map(j -> liquid))
