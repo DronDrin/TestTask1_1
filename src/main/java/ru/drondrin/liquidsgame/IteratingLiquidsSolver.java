@@ -2,10 +2,7 @@ package ru.drondrin.liquidsgame;
 
 import ru.drondrin.liquidsgame.exceptions.WrongMoveException;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 
 public class IteratingLiquidsSolver implements LiquidsSolver {
     private final HashSet<String> pastStates = new HashSet<>();
@@ -23,12 +20,14 @@ public class IteratingLiquidsSolver implements LiquidsSolver {
         if (state.isSolved())
             return Optional.of(new ArrayDeque<>());
         for (int from = 0; from < state.getTubesCount(); from++) {
-            if (state.getTubes().get(from).isEmpty())
+            List<Integer> fromTube = state.getTubes().get(from);
+            if (fromTube.isEmpty())
                 continue;
             for (int to = 0; to < state.getTubesCount(); to++) {
-                if (from == to || state.getTubes().get(to).size() >= state.getTubeVolume()
-                        || (!state.getTubes().get(to).isEmpty() && !state.getTubes().get(from).getLast()
-                        .equals(state.getTubes().get(to).getLast())))
+                List<Integer> toTube = state.getTubes().get(to);
+                if (from == to
+                        || toTube.size() >= state.getTubeVolume()
+                        || (!toTube.isEmpty() && !fromTube.getLast().equals(toTube.getLast())))
                     continue;
                 var move = new Move(from, to);
                 try {
