@@ -4,6 +4,11 @@ import ru.drondrin.liquidsgame.exceptions.WrongMoveException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.IntStream.range;
 
 public class LiquidsState {
     private final List<List<Integer>> tubes;
@@ -101,5 +106,24 @@ public class LiquidsState {
             this.to = to;
             this.count = count;
         }
+    }
+
+    @Override
+    public String toString() {
+        return tubes.stream().map(this::tubeToString).collect(joining("\n"));
+    }
+
+    public String toUniqueString() {
+        return tubes.stream()
+                .filter(t -> !t.isEmpty())
+                .map(this::tubeToString)
+                .sorted()
+                .collect(joining("\n"));
+    }
+
+    private String tubeToString(List<Integer> tube) {
+        return range(0, tubeVolume)
+                .mapToObj(i -> i < tube.size() ? String.valueOf(tube.get(i)) : "_")
+                .collect(joining(" "));
     }
 }
