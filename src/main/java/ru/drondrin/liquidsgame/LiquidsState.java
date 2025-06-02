@@ -33,11 +33,25 @@ public class LiquidsState {
     }
 
     private static void checkTubesInit(int tubeVolume, int tubesCount, int[][] tubes) {
-        if (tubes.length >= tubesCount)
-            throw new IllegalArgumentException("LiquidsState init: tubes.length >= tubesCount");
+        if (tubes.length > tubesCount)
+            throw new IllegalArgumentException("Too many tubes");
         for (var tube : tubes)
             if (tube.length != tubeVolume)
-                throw new IllegalArgumentException("LiquidsState init: tubes[i].length != tubeVolume");
+                throw new IllegalArgumentException("Wrong tube volume");
+
+        int[] colorsCnt = new int[tubesCount + 1];
+        for (var tube : tubes)
+            for (int color : tube)
+                if (color < colorsCnt.length)
+                    colorsCnt[color]++;
+                else
+                    throw new IllegalArgumentException("Wrong coloring");
+
+        for (int color : colorsCnt) {
+            if (colorsCnt[color] != 0 && colorsCnt[color] != tubeVolume) {
+                throw new IllegalArgumentException("Wrong coloring");
+            }
+        }
     }
 
     public int getTubeVolume() {
@@ -101,6 +115,7 @@ public class LiquidsState {
 
     public static class MoveResult {
         private final int from, to, count;
+
         private MoveResult(int from, int to, int count) {
             this.from = from;
             this.to = to;
