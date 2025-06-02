@@ -51,29 +51,36 @@ public class LiquidsState {
         return i < 0 || i >= tubes.size();
     }
 
-    public void move(Move moveInfo) throws WrongMoveException {
-        move(moveInfo, false);
-    }
-
-    public void forceMove(Move moveInfo) throws WrongMoveException {
-        move(moveInfo, true);
-    }
-
-    private void move(Move move, boolean force) throws WrongMoveException {
+    public MoveResult move(Move move) throws WrongMoveException {
         validateTubeIDs(move);
         var fromTube = tubes.get(move.from());
         var toTube = tubes.get(move.to());
-        validateMove(move, fromTube, toTube, force);
+        validateMove(move, fromTube, toTube);
 
-        toTube.add(fromTube.getLast());
-        fromTube.removeLast();
+        int count = 0;
+        while (!fromTube.isEmpty() && toTube.size() < tubeVolume &&
+                (toTube.isEmpty() || fromTube.getLast().equals(toTube.getLast()))) {
+            toTube.add(fromTube.getLast());
+            fromTube.removeLast();
+            count++;
+        }
+        return new MoveResult(move.from(), move.to(), count);
     }
 
-    private void validateMove(Move move, List<Integer> fromTube, List<Integer> toTube, boolean ignoreColoring) throws WrongMoveException {
+    public void revertMove(MoveResult move) {
+        var fromTubeRev = tubes.get(move.to);
+        var toTubeRev = tubes.get(move.from);
+        for (int i = 0; i < move.count; ++i) {
+            toTubeRev.add(fromTubeRev.getLast());
+            fromTubeRev.removeLast();
+        }
+    }
+
+    private void validateMove(Move move, List<Integer> fromTube, List<Integer> toTube) throws WrongMoveException {
         if (fromTube.isEmpty() || toTube.size() >= tubeVolume)
             throw new WrongMoveException(move.from(), move.to(),
                     "Tube filling error (sizes: %d -> %d). Volume: %d".formatted(fromTube.size(), toTube.size(), tubeVolume));
-        if (!ignoreColoring && !toTube.isEmpty() && !fromTube.getLast().equals(toTube.getLast()))
+        if (!toTube.isEmpty() && !fromTube.getLast().equals(toTube.getLast()))
             throw new WrongMoveException(move.from(), move.to(), "Wrong coloring");
     }
 
@@ -85,5 +92,14 @@ public class LiquidsState {
 
     public boolean isSolved() {
         return tubes.stream().allMatch(t -> t.stream().distinct().count() <= 1);
+    }
+
+    public static class MoveResult {
+        private final int from, to, count;
+        private MoveResult(int from, int to, int count) {
+            this.from = from;
+            this.to = to;
+            this.count = count;
+        }
     }
 }
