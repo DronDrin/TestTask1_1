@@ -20,7 +20,7 @@ public class LiquidsState {
     public LiquidsState(int tubeVolume, int tubesCount, int[][] tubes) {
         this(tubeVolume, tubesCount);
         checkTubesInit(tubeVolume, tubesCount, tubes);
-        for (int i = 0; i < tubesCount; i++) {
+        for (int i = 0; i < tubes.length; i++) {
             for (int j = 0; j < tubeVolume; j++) {
                 this.tubes.get(i).add(tubes[i][j]);
             }
@@ -28,8 +28,8 @@ public class LiquidsState {
     }
 
     private static void checkTubesInit(int tubeVolume, int tubesCount, int[][] tubes) {
-        if (tubes.length != tubesCount)
-            throw new IllegalArgumentException("LiquidsState init: tubes.length != tubesCount");
+        if (tubes.length >= tubesCount)
+            throw new IllegalArgumentException("LiquidsState init: tubes.length >= tubesCount");
         for (var tube : tubes)
             if (tube.length != tubeVolume)
                 throw new IllegalArgumentException("LiquidsState init: tubes[i].length != tubeVolume");
