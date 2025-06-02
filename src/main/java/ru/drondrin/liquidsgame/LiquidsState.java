@@ -17,6 +17,24 @@ public class LiquidsState {
             tubes.add(new ArrayList<>(tubeVolume));
     }
 
+    public LiquidsState(int tubeVolume, int tubesCount, int[][] tubes) {
+        this(tubeVolume, tubesCount);
+        checkTubesInit(tubeVolume, tubesCount, tubes);
+        for (int i = 0; i < tubesCount; i++) {
+            for (int j = 0; j < tubeVolume; j++) {
+                this.tubes.get(i).add(tubes[i][j]);
+            }
+        }
+    }
+
+    private static void checkTubesInit(int tubeVolume, int tubesCount, int[][] tubes) {
+        if (tubes.length != tubesCount)
+            throw new IllegalArgumentException("LiquidsState init: tubes.length != tubesCount");
+        for (var tube : tubes)
+            if (tube.length != tubeVolume)
+                throw new IllegalArgumentException("LiquidsState init: tubes[i].length != tubeVolume");
+    }
+
     public int getTubeVolume() {
         return tubeVolume;
     }
