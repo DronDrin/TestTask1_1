@@ -38,7 +38,7 @@ public class LiquidsSolverTests {
                 {9, 9, 7, 10},
                 {11, 6, 2, 6},
                 {3, 9, 5, 4},
-                {1, 12, 3, 5}
+                {1, 12, 3, 6}
         });
         test(new IteratingLiquidsSolver(), state);
     }

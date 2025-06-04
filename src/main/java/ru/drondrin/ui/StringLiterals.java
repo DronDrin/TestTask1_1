@@ -36,5 +36,5 @@ public class StringLiterals {
             Here you go:
             """;
 
-    public static Pattern COLOR_NAME_REGEX = compile("[\\w&&[^_]]+");
+    public static Pattern COLOR_NAME_REGEX = compile("\\w+");
 }

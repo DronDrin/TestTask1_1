@@ -27,7 +27,8 @@ public class LiquidsState {
         checkTubesInit(tubeVolume, tubesCount, tubes);
         for (int i = 0; i < tubes.length; i++) {
             for (int j = 0; j < tubeVolume; j++) {
-                this.tubes.get(i).add(tubes[i][j]);
+                if (tubes[i][j] != -1)
+                    this.tubes.get(i).add(tubes[i][j]);
             }
         }
     }
@@ -42,10 +43,7 @@ public class LiquidsState {
         int[] colorsCnt = new int[tubesCount + 1];
         for (var tube : tubes)
             for (int color : tube)
-                if (color < colorsCnt.length)
-                    colorsCnt[color]++;
-                else
-                    throw new IllegalArgumentException("Wrong coloring");
+                if (color != -1 && color < colorsCnt.length) colorsCnt[color]++;
 
         for (int color : colorsCnt) {
             if (colorsCnt[color] != 0 && colorsCnt[color] != tubeVolume) {

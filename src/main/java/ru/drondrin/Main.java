@@ -36,6 +36,10 @@ public class Main {
 
             int colorI = 0;
             for (int i = 0; i < droplets.size(); i++) {
+                if (droplets.get(i).equals("_")) {
+                    tubes[i / tubeVolume][i % tubeVolume] = -1;
+                    continue;
+                }
                 if (!colorIds.containsKey(droplets.get(i)))
                     colorIds.put(droplets.get(i), colorI++);
                 tubes[i / tubeVolume][i % tubeVolume] = colorIds.get(droplets.get(i));
