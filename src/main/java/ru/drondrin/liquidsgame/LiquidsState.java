@@ -108,7 +108,9 @@ public class LiquidsState {
     }
 
     public boolean isSolved() {
-        return tubes.stream().allMatch(t -> t.stream().distinct().count() <= 1);
+        return tubes.stream()
+                .filter(t -> !t.isEmpty())
+                .allMatch(t -> t.size() == tubeVolume && t.stream().distinct().count() <= 1);
     }
 
     public static class MoveResult {
