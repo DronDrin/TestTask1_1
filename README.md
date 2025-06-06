@@ -1,9 +1,10 @@
 # Решение тестового задания #1
 ## Сортировка жидкостей
 ### Запуск:
+(Из корня)
 1) 1. ./gradlew.bat build (windows)
    2. ./gradlew build (linux)
-2) java -jar build/libs/TestTask1_1-1.0  
+2) java -jar build/libs/TestTask1_1-1.0.jar  
 
 Программа использует Java 21 (тестировалась на jbr и open jre)
 ## Формат ввода
